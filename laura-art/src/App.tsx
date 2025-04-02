@@ -1,12 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import GlobalStyle from './styles/GlobalStyle';
+import Navigation from './components/Navigation';
+import Home from './pages/Home';
+import About from './pages/About';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Laura's Art Gallery</h1>
-    </div>
+    <>
+      <GlobalStyle />
+      <Router>
+        <Navigation />
+        <AnimatePresence mode="wait">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </AnimatePresence>
+      </Router>
+    </>
   );
 }
 
