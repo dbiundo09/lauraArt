@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/lauraArt/static/css/main.f855e6bc.css",
-    "main.js": "/lauraArt/static/js/main.9cf13540.js",
+    "main.css": "/lauraArt/static/css/main.e6c13ad2.css",
+    "main.js": "/lauraArt/static/js/main.697e6aac.js",
     "static/js/453.8ba5568b.chunk.js": "/lauraArt/static/js/453.8ba5568b.chunk.js",
     "index.html": "/lauraArt/index.html",
-    "main.f855e6bc.css.map": "/lauraArt/static/css/main.f855e6bc.css.map",
-    "main.9cf13540.js.map": "/lauraArt/static/js/main.9cf13540.js.map",
+    "main.e6c13ad2.css.map": "/lauraArt/static/css/main.e6c13ad2.css.map",
+    "main.697e6aac.js.map": "/lauraArt/static/js/main.697e6aac.js.map",
     "453.8ba5568b.chunk.js.map": "/lauraArt/static/js/453.8ba5568b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f855e6bc.css",
-    "static/js/main.9cf13540.js"
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.697e6aac.js"
   ]
 }
