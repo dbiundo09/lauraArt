@@ -18,4 +18,3 @@ export const theme = {
     desktop: '1024px',
   },
 }; 
-
