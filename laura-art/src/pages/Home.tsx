@@ -1,7 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
+
+const HomeWrapper = styled.div`
+  background-color: rgb(252, 234, 230);
+  min-height: 100vh;
+`;
 
 const HomeContainer = styled.div`
   min-height: 100vh;
@@ -25,8 +30,8 @@ const Hero = styled.section`
     right: 0;
     bottom: 0;
     background: linear-gradient(45deg, 
-      ${props => props.theme.colors.accent1}22,
-      ${props => props.theme.colors.primary}22);
+      rgba(252, 234, 230, 0.8),
+      rgba(252, 234, 230, 0.4));
     z-index: -1;
   }
 `;
@@ -54,7 +59,7 @@ const HeroSubtitle = styled(motion.p)`
 
 const GallerySection = styled.section`
   padding: 4rem 2rem;
-  background-color: ${props => props.theme.colors.background};
+  background-color: rgb(252, 234, 230);
 `;
 
 const ArtworkGrid = styled.div`
@@ -129,6 +134,7 @@ const ScrollButton = styled(motion.button)`
   border-radius: 30px;
   font-family: ${props => props.theme.fonts.accent};
   font-size: 1.2rem;
+  font-weight: 600;
   cursor: pointer;
   margin-top: 2rem;
   transition: transform 0.3s ease;
@@ -163,6 +169,26 @@ const ButtonContainer = styled.div`
   margin-top: 2rem;
 `;
 
+const ScrollTopButton = styled(motion.button)`
+
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: ${props => props.theme.colors.accent2};
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+`;
+
 const images = [
   'images/img1.jpg',
   'images/img2.jpeg',
@@ -173,86 +199,118 @@ const images = [
 
 const Home = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [showScrollButton, setShowScrollButton] = useState(false);
   const galleryRef = useRef<HTMLElement>(null);
   
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollButton(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleScrollTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   const scrollToGallery = () => {
     galleryRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <HomeContainer>
-      
-      <Hero>
-        <HeroTitle
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          Laura's Art Gallery
-        </HeroTitle>
-        <HeroSubtitle
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          Exploring the boundaries between friendship and identity
-        </HeroSubtitle>
-        <ButtonContainer>
-          <ScrollButton
-            onClick={scrollToGallery}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+    <HomeWrapper>
+      <HomeContainer>
+        <Hero>
+          <HeroTitle
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            View Gallery
-          </ScrollButton>
-        </ButtonContainer>
-      </Hero>
-
-      <GallerySection ref={galleryRef}>
-        <ArtworkGrid>
-          {images.map((image, index) => (
-            <ArtworkCard
-              key={image}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
-              onClick={() => setSelectedImage(image)}
+            Laura's Art Gallery
+          </HeroTitle>
+          <HeroSubtitle
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Exploring the boundaries between friendship and identity
+          </HeroSubtitle>
+          <ButtonContainer>
+            <ScrollButton
+              onClick={scrollToGallery}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <ArtworkImage src={image} alt={`Artwork ${index + 1}`} />
-            </ArtworkCard>
-          ))}
-        </ArtworkGrid>
-      </GallerySection>
+              View Gallery
+            </ScrollButton>
+          </ButtonContainer>
+        </Hero>
 
-      <AnimatePresence>
-        {selectedImage && (
-          <Lightbox
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedImage(null)}
-          >
-            <CloseButton
+        <GallerySection ref={galleryRef}>
+          <ArtworkGrid>
+            {images.map((image, index) => (
+              <ArtworkCard
+                key={image}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
+                onClick={() => setSelectedImage(image)}
+              >
+                <ArtworkImage src={image} alt={`Artwork ${index + 1}`} />
+              </ArtworkCard>
+            ))}
+          </ArtworkGrid>
+        </GallerySection>
+
+        <AnimatePresence>
+          {selectedImage && (
+            <Lightbox
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onClick={() => setSelectedImage(null)}
+            >
+              <CloseButton
+                onClick={() => setSelectedImage(null)}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                ×
+              </CloseButton>
+              <LightboxImage
+                src={selectedImage}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                onClick={(e) => e.stopPropagation()}
+              />
+            </Lightbox>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {showScrollButton && (
+            <ScrollTopButton
+              onClick={handleScrollTop}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0 }}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
-              ×
-            </CloseButton>
-            <LightboxImage
-              src={selectedImage}
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              onClick={(e) => e.stopPropagation()}
-            />
-          </Lightbox>
-        )}
-      </AnimatePresence>
-    </HomeContainer>
+              ↑
+            </ScrollTopButton>
+          )}
+        </AnimatePresence>
+      </HomeContainer>
+    </HomeWrapper>
   );
 };
 

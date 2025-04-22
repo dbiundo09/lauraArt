@@ -59,8 +59,8 @@ const Navigation = () => {
         <Logo to="/">Laura's Art</Logo>
         <NavLinks>
           <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
           <Link to="/progress">Progress</Link>
+          <Link to="/about">About</Link>
         </NavLinks>
       </NavContainer>
     </Nav>

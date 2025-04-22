@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const ProgressWrapper = styled.div`
+  background-color: rgb(252, 234, 230);
+  min-height: 100vh;
+`;
+
 const ProgressContainer = styled.div`
   min-height: 100vh;
   padding: 120px 2rem 4rem;
@@ -223,6 +228,14 @@ const Progress = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Add this new useEffect for auto-scrolling on mount
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }, []); // Empty dependency array means this runs once when component mounts
+
   const handleScrollTop = () => {
     window.scrollTo({
       top: 0,
@@ -247,97 +260,100 @@ const Progress = () => {
   };
 
   return (
-    <ProgressContainer>
-      <ProgressTitle
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        Painting Progression
-      </ProgressTitle>
-      <TimelineContainer>
-        {artworkProgress.map((artwork) => (
-          <TimelineItem
-            key={artwork.id}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <ImageCarousel>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentStages[artwork.id]}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <TimelineImage 
-                    src={artwork.stages[currentStages[artwork.id]].image} 
-                    alt={`${artwork.title} - ${artwork.stages[currentStages[artwork.id]].label}`} 
-                  />
-                  <StageLabel>
-                    {artwork.stages[currentStages[artwork.id]].label}
-                  </StageLabel>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Only show carousel controls if there are multiple images */}
-              {artwork.stages.length > 1 && (
-                <>
-                  <CarouselControls>
-                    {artwork.stages.map((_, index) => (
-                      <CarouselDot
-                        key={index}
-                        active={currentStages[artwork.id] === index}
-                        onClick={() => setCurrentStages(prev => ({ ...prev, [artwork.id]: index }))}
-                      />
-                    ))}
-                  </CarouselControls>
-
-                  <CarouselArrow
-                    className="prev"
-                    onClick={() => handlePrev(artwork.id)}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
+    <ProgressWrapper>
+      <ProgressContainer>
+        <ProgressTitle
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          Painting Progression
+        </ProgressTitle>
+        <TimelineContainer>
+          {artworkProgress.map((artwork) => (
+            
+            <TimelineItem
+              key={artwork.id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <ImageCarousel>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentStages[artwork.id]}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    ←
-                  </CarouselArrow>
-                  <CarouselArrow
-                    className="next"
-                    onClick={() => handleNext(artwork.id)}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    →
-                  </CarouselArrow>
-                </>
-              )}
-            </ImageCarousel>
+                    <TimelineImage 
+                      src={artwork.stages[currentStages[artwork.id]].image} 
+                      alt={`${artwork.title} - ${artwork.stages[currentStages[artwork.id]].label}`} 
+                    />
+                    <StageLabel>
+                      {artwork.stages[currentStages[artwork.id]].label}
+                    </StageLabel>
+                  </motion.div>
+                </AnimatePresence>
 
-            <TimelineContent>
-              <h3>{artwork.title}</h3>
-              <p>{artwork.description}</p>
-            </TimelineContent>
-          </TimelineItem>
-        ))}
-      </TimelineContainer>
+                {/* Only show carousel controls if there are multiple images */}
+                {artwork.stages.length > 1 && (
+                  <>
+                    <CarouselControls>
+                      {artwork.stages.map((_, index) => (
+                        <CarouselDot
+                          key={index}
+                          active={currentStages[artwork.id] === index}
+                          onClick={() => setCurrentStages(prev => ({ ...prev, [artwork.id]: index }))}
+                        />
+                      ))}
+                    </CarouselControls>
 
-      <AnimatePresence>
-        {showScrollButton && (
-          <ScrollTopButton
-            onClick={handleScrollTop}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            ↑
-          </ScrollTopButton>
-        )}
-      </AnimatePresence>
-    </ProgressContainer>
+                    <CarouselArrow
+                      className="prev"
+                      onClick={() => handlePrev(artwork.id)}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      ←
+                    </CarouselArrow>
+                    <CarouselArrow
+                      className="next"
+                      onClick={() => handleNext(artwork.id)}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      →
+                    </CarouselArrow>
+                  </>
+                )}
+              </ImageCarousel>
+
+              <TimelineContent>
+                <h3>{artwork.title}</h3>
+                <p>{artwork.description}</p>
+              </TimelineContent>
+            </TimelineItem>
+          ))}
+        </TimelineContainer>
+
+        <AnimatePresence>
+          {showScrollButton && (
+            <ScrollTopButton
+              onClick={handleScrollTop}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              ↑
+            </ScrollTopButton>
+          )}
+        </AnimatePresence>
+      </ProgressContainer>
+    </ProgressWrapper>
   );
 };
 
