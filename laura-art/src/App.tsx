@@ -5,6 +5,7 @@ import GlobalStyle from './styles/GlobalStyle';
 import Navigation from './components/Navigation';
 import Home from './pages/Home';
 import About from './pages/About';
+import Progress from './pages/Progress';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/progress" element={<Progress />} />
           </Routes>
         </AnimatePresence>
       </Router>

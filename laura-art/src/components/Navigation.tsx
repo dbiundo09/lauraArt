@@ -60,6 +60,7 @@ const Navigation = () => {
         <NavLinks>
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
+          <Link to="/progress">Progress</Link>
         </NavLinks>
       </NavContainer>
     </Nav>

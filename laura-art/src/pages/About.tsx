@@ -34,25 +34,14 @@ const AboutText = styled.div`
   }
 `;
 
-const ArtistImage = styled(motion.div)`
+const ArtistImage = styled(motion.img)`
   width: 100%;
   height: 500px;
-  background-color: ${props => props.theme.colors.accent1}33;
+  object-fit: cover;
   border-radius: 20px;
   overflow: hidden;
   position: relative;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, 
-      ${props => props.theme.colors.primary}22,
-      ${props => props.theme.colors.secondary}22);
-  }
+  transition: transform 0.3s ease;
 `;
 
 const About = () => {
@@ -73,20 +62,22 @@ const About = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Laura Haas's paintings explore the fluid boundaries between friendship and identity—how we are shaped by those around us, and how we, in turn, shape them. Through layered compositions and intimate perspectives drawn from moments with close girl-friends, she aims to give form to the feelings of both understanding and isolation that arise within human connection. Each image becomes a site of negotiation: between self and other, memory and presence, past and possibility.
             </p>
             <p>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            Haas is especially drawn to moments of emotional residue — where gestures, objects, and spaces carry the weight of shared histories. These fragments come together to form portraits that are less about likeness and more about feeling. Identity, in her work, is not fixed. It shifts and softens, often reflected through ambiguous faces and blurred boundaries.
             </p>
             <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            By engaging with these intersections, Haas creates spaces for reflection — where viewers might recognize themselves, their relationships, or their own evolving sense of self mirrored in the work.
             </p>
           </motion.div>
         </AboutText>
-        <ArtistImage
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
+            <ArtistImage
+              src="headshot.JPG"
+              alt="Laura Haas"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
         />
       </AboutContent>
     </AboutContainer>
