@@ -48,6 +48,44 @@ const TimelineImage = styled.img`
   height: 400px;
   object-fit: cover;
   border-radius: 8px;
+  transition: opacity 0.3s ease;
+`;
+
+const ImagePlaceholder = styled.div`
+  width: 100%;
+  height: 400px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
+// Add this new component for image loading
+const LoadingImage = styled(motion.div)`
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(
+    90deg,
+    rgba(240, 240, 240, 0.6) 25%,
+    rgba(240, 240, 240, 0.8) 37%,
+    rgba(240, 240, 240, 0.6) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: 8px;
+
+  @keyframes shimmer {
+    0% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0 50%;
+    }
+  }
 `;
 
 const TimelineContent = styled.div`
@@ -212,6 +250,19 @@ const artworkProgress: ArtworkProgress[] = [
     // Add more artwork progress items as needed
 ];
 
+// Add a custom hook for image preloading
+const useImagePreload = (src: string) => {
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => setLoaded(true);
+  }, [src]);
+
+  return loaded;
+};
+
 const Progress = () => {
   const [currentStages, setCurrentStages] = useState<Record<string, number>>(
     Object.fromEntries(artworkProgress.map(art => [art.id, 0]))
@@ -235,6 +286,14 @@ const Progress = () => {
       behavior: 'smooth'
     });
   }, []); // Empty dependency array means this runs once when component mounts
+
+  useEffect(() => {
+    // Preload first image of each artwork
+    artworkProgress.forEach(artwork => {
+      const img = new Image();
+      img.src = artwork.stages[0].image;
+    });
+  }, []);
 
   const handleScrollTop = () => {
     window.scrollTo({
@@ -286,10 +345,14 @@ const Progress = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
+                    style={{ position: 'relative' }}
                   >
+                    {!useImagePreload(artwork.stages[currentStages[artwork.id]].image) && <LoadingImage />}
                     <TimelineImage 
                       src={artwork.stages[currentStages[artwork.id]].image} 
-                      alt={`${artwork.title} - ${artwork.stages[currentStages[artwork.id]].label}`} 
+                      alt={`${artwork.title} - ${artwork.stages[currentStages[artwork.id]].label}`}
+                      loading="lazy"
+                      style={{ opacity: useImagePreload(artwork.stages[currentStages[artwork.id]].image) ? 1 : 0 }}
                     />
                     <StageLabel>
                       {artwork.stages[currentStages[artwork.id]].label}
