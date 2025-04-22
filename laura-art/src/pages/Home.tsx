@@ -190,11 +190,12 @@ const ScrollTopButton = styled(motion.button)`
 `;
 
 const images = [
-  'images/img1.jpg',
-  'images/img2.jpeg',
-  'images/img3.jpeg',
-  'images/img4.jpeg',
-  'images/img5.jpeg',
+  `${process.env.PUBLIC_URL}/images/img1.jpg`,
+  `${process.env.PUBLIC_URL}/images/img2.jpeg`,
+  `${process.env.PUBLIC_URL}/images/img3.jpeg`,
+  `${process.env.PUBLIC_URL}/images/img4.jpeg`,
+  `${process.env.PUBLIC_URL}/images/img5.jpeg`
+
 ];
 
 const Home = () => {
