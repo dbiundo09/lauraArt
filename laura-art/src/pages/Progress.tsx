@@ -255,7 +255,6 @@ const Progress = () => {
       >
         Painting Progression
       </ProgressTitle>
-
       <TimelineContainer>
         {artworkProgress.map((artwork) => (
           <TimelineItem
