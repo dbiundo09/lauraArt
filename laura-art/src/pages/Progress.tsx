@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 
+
+
+// Random COmment
 const ProgressWrapper = styled.div`
   background-color: rgb(252, 234, 230);
   min-height: 100vh;
