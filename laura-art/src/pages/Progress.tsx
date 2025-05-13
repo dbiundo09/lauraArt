@@ -187,7 +187,18 @@ const progressImages: ProgressImage[] = [
   { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0862.jpg?alt=media&token=4adf0264-f310-42e2-9de5-d53e1309437f', label: 'Initial Sketch' },
   { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0863.jpg?alt=media&token=fdedb569-c6a4-4322-b51b-eb0c9e6b50ea', label: 'Initial Sketch' },
   { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0864.jpg?alt=media&token=16e933a2-f0de-4845-830e-3fdba1871bfa', label: 'Initial Sketch' },
-  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0865.jpg?alt=media&token=f10bc72b-d794-427b-b4cd-57fcaba68bfa', label: 'Initial Sketch' }
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0865.jpg?alt=media&token=f10bc72b-d794-427b-b4cd-57fcaba68bfa', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_8886_(1).jpg?alt=media&token=a17e8ea9-1494-483d-9e34-807c74954ec4', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_8980_(1).jpg?alt=media&token=c2657fd1-68fd-48c0-8801-8296154180a6', label: 'Base Colors' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_8981_(1).jpg?alt=media&token=cc7c8ea2-022a-43bb-b58d-bc4cb37eb7e0', label: 'Base Colors' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_8982_(1).jpg?alt=media&token=824ce78f-882f-4876-a42a-2a042490df64', label: 'Base Colors' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_9603_(1).jpg?alt=media&token=e3dbc829-59eb-41eb-bf21-ab3996a4cc59', label: 'Final Details' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_9612_(1).jpg?alt=media&token=14993cd6-6c63-4f3e-bdf5-0f366a899f4f', label: 'Final Details' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_9670_(1).jpg?alt=media&token=905c0b59-665b-4dd0-a92e-202ca781f5df', label: 'Final Details' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_9731_(1).jpg?alt=media&token=605157e4-3e26-48c6-8379-38d3edb10831', label: 'Final Details' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_9732_(1).jpg?alt=media&token=1c3a1c07-9e6d-4ab3-8058-71a8d504b957', label: 'Final Details' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_9846_(1).jpg?alt=media&token=7e7491e4-d522-4228-977c-92c2b36669fb', label: 'Final Details' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_9847_(1).jpg?alt=media&token=1efe49a9-cadf-4c14-89b5-24cd986dbb1c', label: 'Final Details' }
 ];
 
 const Progress: React.FC = () => {
