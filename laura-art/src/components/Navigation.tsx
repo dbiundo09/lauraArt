@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
@@ -53,14 +53,24 @@ const NavLinks = styled.div`
 `;
 
 const Navigation = () => {
+  const navigate = useNavigate();
+
+  const handleNavigation = (path: string) => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    navigate(path);
+  };
+
   return (
     <Nav>
       <NavContainer>
-        <Logo to="/">Laura's Art</Logo>
+        <Logo to="/" onClick={() => handleNavigation('/')}>Laura's Art</Logo>
         <NavLinks>
-          <Link to="/">Home</Link>
-          <Link to="/progress">Progress</Link>
-          <Link to="/about">About</Link>
+          <Link to="/" onClick={() => handleNavigation('/')}>Home</Link>
+          <Link to="/progress" onClick={() => handleNavigation('/progress')}>Progress</Link>
+          <Link to="/about" onClick={() => handleNavigation('/about')}>About</Link>
         </NavLinks>
       </NavContainer>
     </Nav>
