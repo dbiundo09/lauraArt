@@ -104,10 +104,43 @@ const Lightbox = styled(motion.div)`
   padding: 2rem;
 `;
 
-const LightboxImage = styled(motion.img)`
+const LightboxContent = styled.div`
+  position: relative;
   max-width: 90vw;
   max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const LightboxImage = styled(motion.img)`
+  max-width: 100%;
+  max-height: calc(90vh - 150px);
   object-fit: contain;
+`;
+
+const ArtworkInfo = styled(motion.div)`
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 1.5rem;
+  font-family: ${props => props.theme.fonts.main};
+  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+`;
+
+const ArtworkTitle = styled.h3`
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-family: ${props => props.theme.fonts.heading};
+`;
+
+const ArtworkDetails = styled.p`
+  font-size: 1rem;
+  opacity: 0.9;
+  line-height: 1.4;
 `;
 
 const CloseButton = styled(motion.button)`
@@ -170,7 +203,6 @@ const ButtonContainer = styled.div`
 `;
 
 const ScrollTopButton = styled(motion.button)`
-
   position: fixed;
   bottom: 2rem;
   right: 2rem;
@@ -189,20 +221,92 @@ const ScrollTopButton = styled(motion.button)`
   z-index: 100;
 `;
 
-const images = [
-  `${process.env.PUBLIC_URL}/images/img1.jpg`,
-  `${process.env.PUBLIC_URL}/images/img2.jpeg`,
-  `${process.env.PUBLIC_URL}/images/img3.jpeg`,
-  `${process.env.PUBLIC_URL}/images/img4.jpeg`,
-  `${process.env.PUBLIC_URL}/images/img5.jpeg`
+interface Artwork {
+  title: string;
+  year: string;
+  medium: string;
+  dimensions: string;
+  imageUrl: string;
+}
 
+const artworks: Artwork[] = [
+  {
+    title: "Kairos",
+    year: "2025",
+    medium: "Oil on canvas",
+    dimensions: "18 in x 25 in x 1.5 in",
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/img10.jpg?alt=media&token=b52a00f8-4700-41a5-8c88-99a94cec1085"
+  },
+  {
+    title: "Blue Bath",
+    year: "2025",
+    medium: "Oil on canvas",
+    dimensions: "24 in x 30 in x 2 in",
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/img4.jpeg?alt=media&token=3a2a61db-9653-4ec5-a8ec-d586cf5c14c1"
+  },
+  {
+    title: "Beach Bath",
+    year: "2025",
+    medium: "Oil on canvas",
+    dimensions: "20 in x 16 in x 1.5 in",
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/img3.jpeg?alt=media&token=73ba0d4b-c9c1-4888-8c98-516906da90e9"
+  },
+  {
+    title: "Sarah and Laura",
+    year: "2025",
+    medium: "Oil on canvas",
+    dimensions: "12 in x 16 in x 1.5 in",
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/img5.jpeg?alt=media&token=6cd28ede-108f-4f83-9182-e6c9a130ff9c"
+  },
+  {
+    title: "Untitled",
+    year: "2025",
+    medium: "Oil on canvas",
+    dimensions: "30 in x 40 in x 2 in",
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/img6.jpg?alt=media&token=49b8db2e-f27b-4263-b428-cf5d8960ad6f"
+  },
+  {
+    title: "Girl Talks",
+    year: "2025",
+    medium: "Oil on canvas",
+    dimensions: "18 in x 24 in x 1.5 in",
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/img7.jpg?alt=media&token=052d987d-e1b3-4225-a3e1-2d34950f06a9"
+  },
+  {
+    title: "Girl on Beach",
+    year: "2025",
+    medium: "Oil on canvas",
+    dimensions: "24 in x 18 in x 1.5 in",
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/img8.jpg?alt=media&token=1148d91c-f260-43a2-8607-a9001c34cab2"
+  },
+  {
+    title: "Poker game",
+    year: "2025",
+    medium: "Oil on canvas",
+    dimensions: "18 in x 24 in x 1.5 in",
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/img9.jpg?alt=media&token=c1d2512d-577b-47f8-9fe2-d55c3b3936ae"
+  },
+  {
+    title: "In the Mod Light",
+    year: "2024",
+    medium: "Oil on paper",
+    dimensions: "24 in x 30 in",
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/img1.jpg?alt=media&token=f7ca71dc-4e7b-4dd7-bc03-12a93e4f0d5d"
+  },
+  {
+    title: "In the Grass",
+    year: "2024",
+    medium: "Oil on paper",
+    dimensions: "8.5 in x 12 in",
+    imageUrl: "https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/img2.jpeg?alt=media&token=74058c99-48c9-468e-9847-3528cfd354a5"
+  }
 ];
 
 const Home = () => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const galleryRef = useRef<HTMLElement>(null);
-  
+
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollButton(window.scrollY > 300);
@@ -228,24 +332,24 @@ const Home = () => {
       <HomeContainer>
         <Hero>
           <HeroTitle
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
             Laura's Art Gallery
           </HeroTitle>
           <HeroSubtitle
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
             Exploring the boundaries between friendship and identity
           </HeroSubtitle>
           <ButtonContainer>
             <ScrollButton
               onClick={scrollToGallery}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               View Gallery
             </ScrollButton>
@@ -254,44 +358,55 @@ const Home = () => {
 
         <GallerySection ref={galleryRef}>
           <ArtworkGrid>
-            {images.map((image, index) => (
+            {artworks.map((artwork) => (
               <ArtworkCard
-                key={image}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-                onClick={() => setSelectedImage(image)}
+                key={artwork.imageUrl}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                whileHover={{ y: -2 }}
+                onClick={() => setSelectedArtwork(artwork)}
               >
-                <ArtworkImage src={image} alt={`Artwork ${index + 1}`} />
+                <ArtworkImage src={artwork.imageUrl} alt={artwork.title} />
               </ArtworkCard>
             ))}
           </ArtworkGrid>
         </GallerySection>
 
         <AnimatePresence>
-          {selectedImage && (
+          {selectedArtwork && (
             <Lightbox
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setSelectedImage(null)}
+              onClick={() => setSelectedArtwork(null)}
             >
               <CloseButton
-                onClick={() => setSelectedImage(null)}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+                onClick={() => setSelectedArtwork(null)}
+                whileHover={{ scale: 1.05 }}
               >
                 ×
               </CloseButton>
-              <LightboxImage
-                src={selectedImage}
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                onClick={(e) => e.stopPropagation()}
-              />
+              <LightboxContent onClick={(e) => e.stopPropagation()}>
+                <LightboxImage
+                  src={selectedArtwork.imageUrl}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                />
+                <ArtworkInfo
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ArtworkTitle>{selectedArtwork.title}, {selectedArtwork.year}</ArtworkTitle>
+                  <ArtworkDetails>
+                    {selectedArtwork.medium}<br />
+                    {selectedArtwork.dimensions}
+                  </ArtworkDetails>
+                </ArtworkInfo>
+              </LightboxContent>
             </Lightbox>
           )}
         </AnimatePresence>
@@ -300,11 +415,10 @@ const Home = () => {
           {showScrollButton && (
             <ScrollTopButton
               onClick={handleScrollTop}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0 }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              whileHover={{ scale: 1.05 }}
             >
               ↑
             </ScrollTopButton>

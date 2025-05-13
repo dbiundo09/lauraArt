@@ -21,145 +21,31 @@ const ProgressTitle = styled(motion.h1)`
   text-align: center;
 `;
 
-const TimelineContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  margin-top: 4rem;
-`;
-
-const TimelineItem = styled(motion.div)`
+const ProgressGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  align-items: center;
-  padding: 2rem;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
-  }
+  margin-top: 2rem;
 `;
 
-const TimelineImage = styled.img`
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-  border-radius: 8px;
-  transition: opacity 0.3s ease;
-`;
-
-const ImagePlaceholder = styled.div`
-  width: 100%;
-  height: 400px;
-  background-color: #f0f0f0;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-`;
-
-// Add this new component for image loading
-const LoadingImage = styled(motion.div)`
-  width: 100%;
-  height: 400px;
-  background: linear-gradient(
-    90deg,
-    rgba(240, 240, 240, 0.6) 25%,
-    rgba(240, 240, 240, 0.8) 37%,
-    rgba(240, 240, 240, 0.6) 63%
-  );
-  background-size: 400% 100%;
-  animation: shimmer 1.4s ease infinite;
-  border-radius: 8px;
-
-  @keyframes shimmer {
-    0% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0 50%;
-    }
-  }
-`;
-
-const TimelineContent = styled.div`
-  h3 {
-    font-size: 1.8rem;
-    color: ${props => props.theme.colors.accent2};
-    margin-bottom: 1rem;
-  }
-
-  p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: ${props => props.theme.colors.text};
-  }
-`;
-
-const ImageCarousel = styled.div`
+const ProgressCard = styled(motion.div)`
   position: relative;
-  width: 100%;
-  border-radius: 8px;
+  cursor: pointer;
+  border-radius: 12px;
   overflow: hidden;
-`;
-
-const CarouselControls = styled.div`
-  position: absolute;
-  bottom: 1rem;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  z-index: 2;
-`;
-
-const CarouselDot = styled.button<{ active: boolean }>`
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: none;
-  background-color: ${props => props.active ? 'white' : 'rgba(255, 255, 255, 0.5)'};
-  cursor: pointer;
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  aspect-ratio: 3/4;
   
-  &:hover {
-    transform: scale(1.2);
+  &:hover img {
+    transform: scale(1.05);
   }
 `;
 
-const CarouselArrow = styled(motion.button)`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.8);
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 2;
-  
-  &:hover {
-    background: white;
-  }
-
-  &.prev {
-    left: 1rem;
-  }
-
-  &.next {
-    right: 1rem;
-  }
+const ProgressImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 `;
 
 const StageLabel = styled.div`
@@ -172,6 +58,51 @@ const StageLabel = styled.div`
   border-radius: 20px;
   font-size: 0.9rem;
   z-index: 2;
+`;
+
+const Lightbox = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 2rem;
+`;
+
+const LightboxContent = styled.div`
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const LightboxImage = styled(motion.img)`
+  max-width: 100%;
+  max-height: calc(90vh - 120px);
+  object-fit: contain;
+`;
+
+const CloseButton = styled(motion.button)`
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1001;
+  
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const ScrollTopButton = styled(motion.button)`
@@ -193,83 +124,78 @@ const ScrollTopButton = styled(motion.button)`
   z-index: 100;
 `;
 
-interface ArtworkProgress {
-  id: string;
-  title: string;
-  description: string;
-  stages: {
-    image: string;
-    label: string;
-  }[];
+const LoadingContainer = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(252, 234, 230);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  gap: 1rem;
+`;
+
+const LoadingText = styled.h2`
+  color: ${props => props.theme.colors.accent2};
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+`;
+
+const ProgressBarContainer = styled.div`
+  width: 300px;
+  height: 4px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+`;
+
+const ProgressBar = styled(motion.div)`
+  height: 100%;
+  background-color: ${props => props.theme.colors.accent2};
+  width: 0%;
+`;
+
+interface ProgressImage {
+  image: string;
+  label: string;
 }
 
-const artworkProgress: ArtworkProgress[] = [
-  {
-    id: '1',
-    title: 'Portrait Study',
-    description: 'An exploration of emotion through portraiture, focusing on the interplay of light and shadow.',
-    stages: [
-      { image: 'images/progress/img2.jpeg', label: 'Initial Sketch' },
-      { image: 'images/progress/img1.jpeg', label: 'Base Colors' }
-    ]
-  },{
-    id: '2',
-    title: 'Portrait Study',
-    description: 'An exploration of emotion through portraiture, focusing on the interplay of light and shadow.',
-    stages: [
-      { image: 'images/progress/img5.jpeg', label: 'Initial Sketch' },
-      { image: 'images/progress/img9.jpg', label: 'Base Colors' },
-      { image: 'images/progress/img10.jpg', label: 'Final Details' },
-      { image: 'images/progress/img8.jpg', label: 'Final Details' },
-    ]
-  },{
-    id: '3',
-    title: 'Portrait Study',
-    description: 'An exploration of emotion through portraiture, focusing on the interplay of light and shadow.',
-    stages: [
-      { image: 'images/progress/img6.jpeg', label: 'Initial Sketch' },
-    ]
-  },
-  {
-    id: '4',
-    title: 'Portrait Study',
-    description: 'An exploration of emotion through portraiture, focusing on the interplay of light and shadow.',
-    stages: [
-      { image: 'images/progress/img7.jpeg', label: 'Initial Sketch' }
-    ]
-  },
-{
-    id: '5',
-    title: 'Portrait Study',
-    description: 'An exploration of emotion through portraiture, focusing on the interplay of light and shadow.',
-    stages: [
-      { image: 'images/progress/img3.jpeg', label: 'Initial Sketch' },
-      { image: 'images/progress/img4.jpeg', label: 'Initial Sketch' }
-    ]
-  }
-    // Add more artwork progress items as needed
+const progressImages: ProgressImage[] = [
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2Fimg2.jpeg?alt=media&token=1fa666f3-8b2b-432a-8495-1b989c342981', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2Fimg1.jpeg?alt=media&token=4f374569-b045-48c5-8ef8-210f4f833e4f', label: 'Base Colors' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2Fimg5.jpeg?alt=media&token=6dba481e-7212-41c3-ac9d-5275fbcbe207', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2Fimg9.jpg?alt=media&token=cc7bde64-5ca4-4e97-b9d5-bbf10ece67cd', label: 'Base Colors' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2Fimg10.jpg?alt=media&token=6f6efbf4-d271-448c-9316-f4bfa4a99f52', label: 'Final Details' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2Fimg8.jpg?alt=media&token=e6148c1f-db9e-4c7c-8cbe-0180a1507ef3', label: 'Final Details' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2Fimg6.jpeg?alt=media&token=8df817a6-d109-41dc-be67-5db866a3311b', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2Fimg7.jpeg?alt=media&token=250f5807-e819-479c-b64c-a4d77111c8af', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2Fimg3.jpeg?alt=media&token=9eddb820-1ec0-4de8-ad71-6a3f8585c616', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2Fimg4.jpeg?alt=media&token=fe1246dc-147a-498a-9dbe-a02d6b4c0e13', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0082_(1).jpg?alt=media&token=ca66a702-b7ca-41c9-89cf-956d654fd94d', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0082_(1).jpg?alt=media&token=ca66a702-b7ca-41c9-89cf-956d654fd94d', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0853.jpg?alt=media&token=28c53cd3-54f9-48b1-8af1-9024fb29828f', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0854.jpg?alt=media&token=b40cd1d6-2143-43b7-b868-4eb27135ca09', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0855.jpg?alt=media&token=82698a25-6243-4257-86c8-4cb22e383c64', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0857.jpg?alt=media&token=567d34e8-f9d0-4a0f-9186-4124f5b506b8', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0859.jpg?alt=media&token=18846a1f-0aa3-41c1-9a31-5485d2522931', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0860.jpg?alt=media&token=9a8b5099-c452-4ac2-a533-9366b4ebc380', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0861.jpg?alt=media&token=369d23af-d654-44f9-bdf9-4094cead20a4', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0862.jpg?alt=media&token=4adf0264-f310-42e2-9de5-d53e1309437f', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0863.jpg?alt=media&token=fdedb569-c6a4-4322-b51b-eb0c9e6b50ea', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0864.jpg?alt=media&token=16e933a2-f0de-4845-830e-3fdba1871bfa', label: 'Initial Sketch' },
+  { image: 'https://firebasestorage.googleapis.com/v0/b/laura-ef296.firebasestorage.app/o/progress%2FIMG_0865.jpg?alt=media&token=f10bc72b-d794-427b-b4cd-57fcaba68bfa', label: 'Initial Sketch' }
 ];
 
-// Add a custom hook for image preloading
-const useImagePreload = (src: string) => {
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    const img = new Image();
-    img.src = src;
-    img.onload = () => setLoaded(true);
-  }, [src]);
-
-  return loaded;
-};
-
-const Progress = () => {
-  const [currentStages, setCurrentStages] = useState<Record<string, number>>(
-    Object.fromEntries(artworkProgress.map(art => [art.id, 0]))
-  );
+const Progress: React.FC = () => {
+  const [selectedImage, setSelectedImage] = useState<ProgressImage | null>(null);
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Add scroll event listener to show/hide scroll button
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollButton(window.scrollY > 300);
@@ -279,21 +205,41 @@ const Progress = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Add this new useEffect for auto-scrolling on mount
+  // Preload images
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  }, []); // Empty dependency array means this runs once when component mounts
+    const preloadImages = async () => {
+      const imagePromises = progressImages.map((item) => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.src = item.image;
+          img.onload = () => {
+            setLoadedImages(prev => {
+              const newSet = new Set(prev);
+              newSet.add(item.image);
+              return newSet;
+            });
+            resolve(img);
+          };
+          img.onerror = reject;
+        });
+      });
 
-  useEffect(() => {
-    // Preload first image of each artwork
-    artworkProgress.forEach(artwork => {
-      const img = new Image();
-      img.src = artwork.stages[0].image;
-    });
+      try {
+        await Promise.all(imagePromises);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
+      } catch (error) {
+        console.error('Error loading images:', error);
+        // If there's an error, we should still show the gallery
+        setIsLoading(false);
+      }
+    };
+
+    preloadImages();
   }, []);
+
+  const loadingProgress = (loadedImages.size / progressImages.length) * 100;
 
   const handleScrollTop = () => {
     window.scrollTo({
@@ -302,114 +248,89 @@ const Progress = () => {
     });
   };
 
-  const handleNext = (artworkId: string) => {
-    setCurrentStages(prev => ({
-      ...prev,
-      [artworkId]: (prev[artworkId] + 1) % artworkProgress.find(art => art.id === artworkId)!.stages.length
-    }));
-  };
-
-  const handlePrev = (artworkId: string) => {
-    setCurrentStages(prev => ({
-      ...prev,
-      [artworkId]: prev[artworkId] === 0 
-        ? artworkProgress.find(art => art.id === artworkId)!.stages.length - 1 
-        : prev[artworkId] - 1
-    }));
-  };
-
   return (
     <ProgressWrapper>
+      <AnimatePresence>
+        {isLoading && (
+          <LoadingContainer
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <LoadingText>Loading Gallery</LoadingText>
+            <ProgressBarContainer>
+              <ProgressBar
+                initial={{ width: '0%' }}
+                animate={{ width: `${loadingProgress}%` }}
+                transition={{ duration: 0.3 }}
+              />
+            </ProgressBarContainer>
+          </LoadingContainer>
+        )}
+      </AnimatePresence>
+
       <ProgressContainer>
         <ProgressTitle
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          Painting Progression
+          Progression and Experimentation
         </ProgressTitle>
-        <TimelineContainer>
-          {artworkProgress.map((artwork) => (
-            
-            <TimelineItem
-              key={artwork.id}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+
+        <ProgressGrid>
+          {progressImages.map((item) => (
+            <ProgressCard
+              key={item.image}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+              whileHover={{ y: -2 }}
+              onClick={() => setSelectedImage(item)}
             >
-              <ImageCarousel>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentStages[artwork.id]}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    style={{ position: 'relative' }}
-                  >
-                    {!useImagePreload(artwork.stages[currentStages[artwork.id]].image) && <LoadingImage />}
-                    <TimelineImage 
-                      src={artwork.stages[currentStages[artwork.id]].image} 
-                      alt={`${artwork.title} - ${artwork.stages[currentStages[artwork.id]].label}`}
-                      loading="lazy"
-                      style={{ opacity: useImagePreload(artwork.stages[currentStages[artwork.id]].image) ? 1 : 0 }}
-                    />
-                    <StageLabel>
-                      {artwork.stages[currentStages[artwork.id]].label}
-                    </StageLabel>
-                  </motion.div>
-                </AnimatePresence>
-
-                {/* Only show carousel controls if there are multiple images */}
-                {artwork.stages.length > 1 && (
-                  <>
-                    <CarouselControls>
-                      {artwork.stages.map((_, index) => (
-                        <CarouselDot
-                          key={index}
-                          active={currentStages[artwork.id] === index}
-                          onClick={() => setCurrentStages(prev => ({ ...prev, [artwork.id]: index }))}
-                        />
-                      ))}
-                    </CarouselControls>
-
-                    <CarouselArrow
-                      className="prev"
-                      onClick={() => handlePrev(artwork.id)}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      ←
-                    </CarouselArrow>
-                    <CarouselArrow
-                      className="next"
-                      onClick={() => handleNext(artwork.id)}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      →
-                    </CarouselArrow>
-                  </>
-                )}
-              </ImageCarousel>
-
-              <TimelineContent>
-                <h3>{artwork.title}</h3>
-                <p>{artwork.description}</p>
-              </TimelineContent>
-            </TimelineItem>
+              <ProgressImage
+                src={item.image}
+                alt={item.label}
+              />
+            </ProgressCard>
           ))}
-        </TimelineContainer>
+        </ProgressGrid>
+
+        <AnimatePresence>
+          {selectedImage && (
+            <Lightbox
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedImage(null)}
+            >
+              <CloseButton
+                onClick={() => setSelectedImage(null)}
+                whileHover={{ scale: 1.05 }}
+              >
+                ×
+              </CloseButton>
+              <LightboxContent onClick={(e) => e.stopPropagation()}>
+                <LightboxImage
+                  src={selectedImage.image}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                />
+              </LightboxContent>
+            </Lightbox>
+          )}
+        </AnimatePresence>
 
         <AnimatePresence>
           {showScrollButton && (
             <ScrollTopButton
               onClick={handleScrollTop}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0 }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              whileHover={{ scale: 1.05 }}
             >
               ↑
             </ScrollTopButton>
